@@ -1,3 +1,15 @@
+# Current TLM-01 runtime — 2026-11-04
+
+SIMULATED-only MQTT ingestion, V2 registry/observation persistence, transactional outbox and scoped latest-reading API are implemented under the accepted adapter package. See [runtime guide](docs/TLM01_RUNTIME.md) for independent checks, generated-only activation/recovery and actual verification limits. Contracts 0.10.0 pins are unchanged. Earlier foundation/no-runtime/JPA statements below are historical: runtime persistence uses JDBC/Flyway. Final-source generated platform verification passed after Docker became available; owner functional acceptance remains open and no existing-stack rollout is inferred.
+
+# TLM-01 local contract release/pins — 2026-11-01
+
+Owner-accepted Contracts **0.10.0** API/MQTT/event artifacts are pinned under src/main/resources/contracts; scripts/validate_contract_pins.py and Maven ContractPinsTest verify exact local/packaged bytes without sibling source. Run python scripts/validate_contract_pins.py plus the existing Java 25 verify command. Earlier no-pin labels below are historical; runtime adapters and V2 remain unimplemented.
+
+# TLM-01 preparation — 2026-11-01
+
+Owner-approved TLM-01 pure domain/ports/tests are now prepared; see docs/TLM01_DOMAIN_PREPARATION.md. The foundation-only language below remains accurate for runtime adapters: no business endpoint/MQTT handler/migration or contract pin is delivered. Run the existing Java 25 verify command; exact Contracts candidate acceptance precedes runtime implementation.
+
 # agrosphere-telemetry-service
 
 Device registry, MQTT ingestion, weather/soil readings, normalization and environmental anomaly events.

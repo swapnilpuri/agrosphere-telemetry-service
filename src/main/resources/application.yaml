@@ -10,18 +10,30 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: validate
   flyway:
     enabled: true
+    user: ${DB_MIGRATION_USER}
+    password: ${DB_MIGRATION_PASSWORD}
   rabbitmq:
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
     host: ${RABBITMQ_HOST:localhost}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
 server:
   port: ${SERVER_PORT:8084}
+telemetry:
+  demo:
+    enabled: ${TELEMETRY_DEMO_ENABLED:false}
+  security:
+    audience: ${OIDC_AUDIENCE:agrosphere-api}
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
 management:
   endpoints:
     web:
