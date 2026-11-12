@@ -1,3 +1,7 @@
+# POC-CLOSE registry correction — 2026-11-11
+
+V3 permits separate weather and soil devices on one canonical block. Fresh-database, populated-upgrade and rollback checks pass with the existing MQTT/JWT/outbox integration suite. The current run uses per-attempt test evidence directories. Architecture records the exact migration review and connected verification outcomes.
+
 # Current TLM-01 runtime — 2026-11-04
 
 SIMULATED-only MQTT ingestion, V2 registry/observation persistence, transactional outbox and scoped latest-reading API are implemented under the accepted adapter package. See [runtime guide](docs/TLM01_RUNTIME.md) for independent checks, generated-only activation/recovery and actual verification limits. Contracts 0.10.0 pins are unchanged. Earlier foundation/no-runtime/JPA statements below are historical: runtime persistence uses JDBC/Flyway. Final-source generated platform verification passed after Docker became available; owner functional acceptance remains open and no existing-stack rollout is inferred.

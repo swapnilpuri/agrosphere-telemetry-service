@@ -3,14 +3,15 @@
 Requires jsonschema in the chosen development interpreter; no sibling source import.
 """
 import json
+import argparse
 from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 from validate_contract_pins import run as pins, ROOT
 
 
-def main():
+def main(exports=None):
     pins()
-    exports = Path(__file__).resolve().parents[1] / 'target/tlm01-wire'
+    exports = Path(exports) if exports else Path(__file__).resolve().parents[1] / 'target/tlm01-wire'
     api = json.loads((ROOT / 'openapi/telemetry-service.yaml').read_text())
     responses = json.loads((exports / 'responses.json').read_text())
     assert responses and {x['schema'] for x in responses} == {'LatestReadings', 'Problem'}
@@ -36,4 +37,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--exports')
+    main(parser.parse_args().exports)

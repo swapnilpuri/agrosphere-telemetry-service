@@ -260,7 +260,7 @@ class TelemetryAdaptersIT {
   for(int status:new int[]{404,503}){referenceStatus=status;try{var response=get(fixtureToken);assertEquals(status,response.statusCode());responses.add(Map.of("schema","Problem","value",json.readTree(response.body())));}finally{referenceStatus=200;}}
   var expiredClaims=new JWTClaimsSet.Builder(SignedJWT.parse(fixtureToken).getJWTClaimsSet()).expirationTime(java.util.Date.from(Instant.now().minusSeconds(180))).build();
   var expired=new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256).keyID("fixture").build(),expiredClaims);expired.sign(new RSASSASigner(key));assertEquals(401,get(expired.serialize()).statusCode());
-  Path exports=Path.of("target/tlm01-wire");Files.createDirectories(exports);Files.writeString(exports.resolve("responses.json"),json.writeValueAsString(responses));
+  Path exports=Path.of(System.getProperty("telemetry.test.evidence.directory","target/tlm01-wire"));Files.createDirectories(exports);Files.writeString(exports.resolve("responses.json"),json.writeValueAsString(responses));
   var events=owner.queryForList("SELECT payload::text FROM outbox_event WHERE event_type='TelemetryObservationRecorded'",String.class).stream().map(json::readTree).toList();
   Files.writeString(exports.resolve("events.json"),json.writeValueAsString(events));
  }
@@ -317,6 +317,6 @@ class TelemetryAdaptersIT {
   if(rabbit!=null)rabbit.close();if(mqtt!=null)mqtt.close();if(pg!=null)pg.close();
   // Explicit per-file generated credential cleanup, confined to our resolved temp root.
   if(directory!=null){Path resolved=directory.toRealPath();assertTrue(resolved.getFileName().toString().startsWith("agrosphere-tlm-"+run));try(var files=Files.list(resolved)){for(Path p:files.toList()){assertTrue(p.toRealPath().startsWith(resolved));Files.delete(p);}}Files.delete(resolved);assertFalse(Files.exists(resolved));}
-  Files.createDirectories(Path.of("target"));Files.writeString(Path.of("target/tlm01-owned-containers.json"),json.writeValueAsString(Map.of("run",run,"containers",ownedContainerIds,"credentialDirectoryRemoved",directory==null||!Files.exists(directory))));
+  Path ownedEvidence=System.getProperty("telemetry.test.evidence.directory")==null?Path.of("target/tlm01-owned-containers.json"):Path.of(System.getProperty("telemetry.test.evidence.directory")).resolve("adapter-owned.json");Files.createDirectories(ownedEvidence.getParent());Files.writeString(ownedEvidence,json.writeValueAsString(Map.of("run",run,"containers",ownedContainerIds,"credentialDirectoryRemoved",directory==null||!Files.exists(directory))));
  }
 }
